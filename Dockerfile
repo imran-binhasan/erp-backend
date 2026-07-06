@@ -23,8 +23,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev --legacy-peer-deps
 
-# Copy compiled output from builder
+# Copy compiled output + source files (swagger-jsdoc scans .ts routes at runtime)
 COPY --from=builder /app/dist ./dist
+COPY tsconfig.json ./
+COPY src/ ./src/
 
 EXPOSE 5000
 

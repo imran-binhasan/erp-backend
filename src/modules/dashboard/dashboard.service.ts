@@ -16,8 +16,8 @@ function buildSalesTrend(
 
   for (let i = 6; i >= 0; i--) {
     const day = new Date();
-    day.setHours(0, 0, 0, 0);
-    day.setDate(day.getDate() - i);
+    day.setUTCHours(0, 0, 0, 0);
+    day.setUTCDate(day.getUTCDate() - i);
     const key = day.toISOString().slice(0, 10);
     const entry = byDate.get(key);
     trend.push({
@@ -32,8 +32,8 @@ function buildSalesTrend(
 
 export const getDashboardStats = async () => {
   const sevenDaysAgo = new Date();
-  sevenDaysAgo.setHours(0, 0, 0, 0);
-  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 6);
+  sevenDaysAgo.setUTCHours(0, 0, 0, 0);
+  sevenDaysAgo.setUTCDate(sevenDaysAgo.getUTCDate() - 6);
 
   const [
     totalProducts,
