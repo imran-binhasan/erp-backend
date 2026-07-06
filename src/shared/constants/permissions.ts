@@ -1,0 +1,42 @@
+export const PERMISSIONS = {
+  PRODUCT_CREATE: 'product:create',
+  PRODUCT_READ: 'product:read',
+  PRODUCT_UPDATE: 'product:update',
+  PRODUCT_DELETE: 'product:delete',
+  SALE_CREATE: 'sale:create',
+  SALE_READ: 'sale:read',
+  CUSTOMER_MANAGE: 'customer:manage',
+  CUSTOMER_READ: 'customer:read',
+  CUSTOMER_DELETE: 'customer:delete',
+  USER_MANAGE: 'user:manage',
+  ROLE_MANAGE: 'role:manage',
+  DASHBOARD_VIEW: 'dashboard:view',
+} as const;
+
+export const DEFAULT_ROLES = {
+  ADMIN: 'Admin',
+  MANAGER: 'Manager',
+  EMPLOYEE: 'Employee',
+} as const;
+
+export const ROLE_PERMISSIONS: Record<string, string[]> = {
+  [DEFAULT_ROLES.ADMIN]: ['*'],
+  [DEFAULT_ROLES.MANAGER]: [
+    PERMISSIONS.PRODUCT_CREATE,
+    PERMISSIONS.PRODUCT_READ,
+    PERMISSIONS.PRODUCT_UPDATE,
+    PERMISSIONS.PRODUCT_DELETE,
+    PERMISSIONS.CUSTOMER_MANAGE,
+    PERMISSIONS.CUSTOMER_READ,
+    PERMISSIONS.CUSTOMER_DELETE,
+    PERMISSIONS.SALE_CREATE,
+    PERMISSIONS.SALE_READ,
+    PERMISSIONS.DASHBOARD_VIEW,
+  ],
+  [DEFAULT_ROLES.EMPLOYEE]: [
+    PERMISSIONS.PRODUCT_READ,
+    PERMISSIONS.CUSTOMER_READ,
+    PERMISSIONS.SALE_CREATE,
+    PERMISSIONS.DASHBOARD_VIEW,
+  ],
+};
