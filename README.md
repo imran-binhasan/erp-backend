@@ -3,57 +3,8 @@
 Inventory & Sales Management API built with **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Mongoose**, and **JWT**.
 
 > **Live API:** `https://erp-taskb.railway.app/api/v1`
-> **Live Docs:** `https://erp-taskb.railway.app/api-docs`
+> **Swagger Docs:** `https://erp-taskb.railway.app/api-docs`
 > **Frontend:** `https://erp-taskf.vercel.app`
-
----
-
-## Features
-
-- **JWT Authentication** — login with email/password, token-based protected routes, change-password endpoint
-- **RBAC** — Admin, Manager, Employee roles with granular DB-driven permissions
-- **Products** — full CRUD with Cloudinary image upload, search (text-indexed), pagination
-- **Sales** — multi-item sale creation with transaction-safe stock deduction, oversell prevention, auto grand total, immutable history
-- **Customers** — full CRUD with soft delete
-- **Users** — full CRUD with role assignment
-- **Roles** — full CRUD with dynamic permission sets
-- **Dashboard** — aggregate stats (total products, customers, sales, low-stock alerts)
-- **Real-time** — Socket.io pushes `stock-updated` and `low-stock-alert` events
-- **Validation** — Zod schemas on all mutation endpoints, consistent API envelope
-- **Swagger** — interactive docs at `/api-docs`
-- **Permission Cache** — in-memory 60s TTL reduces DB hits for role lookups
-
----
-
-## Folder Structure
-
-```
-src/
-├── core/
-│   ├── middleware/        # auth, permission, validate, upload, errorHandler, rateLimiter, requestLogger
-│   ├── socket/            # Socket.io server
-│   ├── swagger.ts         # OpenAPI 3.0 spec
-│   ├── app.ts             # Express app setup
-│   ├── db.ts              # MongoDB connection
-│   └── server.ts          # HTTP server + graceful shutdown
-├── modules/
-│   ├── auth/              # Login + change-password (controller, service, validation, routes)
-│   ├── product/           # Full CRUD (controller, service, model, validation, routes)
-│   ├── customer/          # Full CRUD (controller, service, model, validation, routes)
-│   ├── sale/              # Create + List (controller, service, model, validation, routes)
-│   ├── dashboard/         # Aggregated stats (controller, service, routes)
-│   ├── user/              # Full CRUD (controller, service, model, validation, routes)
-│   └── role/              # Full CRUD with dynamic permission sets (controller, service, model, validation, routes)
-├── shared/
-│   ├── constants/         # HTTP status codes, permission constants + default role mappings
-│   ├── errors/            # AppError classes (NotFound, BadRequest, Unauthorized, etc.)
-│   ├── types/             # AuthUser, JwtPayload, common types
-│   └── utils/             # asyncHandler, ApiResponse, jwt, password, cloudinary, queryBuilder, permissionCache
-├── routes/
-│   └── index.ts           # Route aggregator
-├── types/                 # Express type augmentation
-└── env.ts                 # Zod-validated environment config
-```
 
 ---
 
@@ -62,28 +13,28 @@ src/
 ```bash
 git clone <repo-url>
 cd backend
-npm install
-cp .env.example .env   # fill in MongoDB URI, JWT secret, Cloudinary creds
-npm run seed            # seeds roles + demo users
-npm run dev             # http://localhost:5000
+cp .env.example .env        # fill in values
+npm install --legacy-peer-deps
+npm run seed               # seed roles, users, products, sales
+npm run dev                # http://localhost:5000
 ```
 
 ## Demo Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@example.com | admin123 |
-| Manager | manager@example.com | manager123 |
-| Employee | employee@example.com | employee123 |
+| Role | Name | Email | Password |
+|------|------|-------|----------|
+| Admin | Imran Bin Hasan | admin@example.com | admin123 |
+| Manager | Sara Rahman | manager@example.com | manager123 |
+| Employee | John Doe | employee@example.com | employee123 |
 
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
-| `npm run dev` | Start dev server with watch |
-| `npm run build` | Type-check + compile to `dist/` |
+| `npm run dev` | Start dev server (tsx watch) |
+| `npm run build` | Compile TypeScript |
 | `npm run start` | Run compiled server |
-| `npm run seed` | Seed roles + demo users |
+| `npm run seed` | Seed database with sample data |
 | `npm run lint` | ESLint |
 
 ## Environment Variables
@@ -92,20 +43,20 @@ npm run dev             # http://localhost:5000
 |----------|----------|-------------|
 | `PORT` | No | Default 5000 |
 | `MONGODB_URI` | Yes | MongoDB connection string |
-| `JWT_SECRET` | Yes | Min 32 characters |
+| `JWT_SECRET` | Yes | Min 32 chars |
 | `JWT_EXPIRES_IN` | No | Default `7d` |
 | `CLOUDINARY_CLOUD_NAME` | Yes | Cloudinary cloud name |
 | `CLOUDINARY_API_KEY` | Yes | Cloudinary API key |
 | `CLOUDINARY_API_SECRET` | Yes | Cloudinary API secret |
 | `CORS_ORIGIN` | No | Default `http://localhost:5173` |
 
-## API Overview
+## API Endpoints
 
 Base path: `/api/v1`
 
 | Module | Endpoints |
 |--------|-----------|
-| Auth | `POST /auth/login` |
+| Auth | `POST /auth/login`, `POST /auth/change-password` |
 | Products | `GET/POST /products`, `GET/PATCH/DELETE /products/:id` |
 | Customers | `GET/POST /customers`, `GET/PATCH/DELETE /customers/:id` |
 | Sales | `GET/POST /sales`, `GET /sales/:id` |
@@ -113,15 +64,15 @@ Base path: `/api/v1`
 | Roles | `GET/POST /roles`, `GET/PATCH/DELETE /roles/:id` |
 | Dashboard | `GET /dashboard/stats` |
 
-Full interactive docs at `/api-docs` (Swagger).
+---
 
-## Docker (Production)
+## Docker
 
 ```bash
 docker build -t mini-erp-backend .
 docker run -p 5000:5000 \
-  -e MONGODB_URI=mongodb+srv://... \
-  -e JWT_SECRET=your-secret-key-min-32-chars \
+  -e MONGODB_URI=<your-mongodb-uri> \
+  -e JWT_SECRET=<your-secret> \
   -e CLOUDINARY_CLOUD_NAME=... \
   -e CLOUDINARY_API_KEY=... \
   -e CLOUDINARY_API_SECRET=... \
@@ -129,15 +80,29 @@ docker run -p 5000:5000 \
   mini-erp-backend
 ```
 
-Deployed on **Railway** → [`https://erp-taskb.railway.app`](https://erp-taskb.railway.app)
+Deployed on **Railway** → `https://erp-taskb.railway.app`
+
+---
+
+## Seeder
+
+Run `npm run seed` to populate the database with:
+
+- **3 roles** — Admin, Manager, Employee
+- **3 users** — matching the demo credentials above
+- **12 customers** — Bangladeshi names and phone numbers
+- **30 products** — groceries, dairy, meat, vegetables, spices, snacks, beverages, personal care, electronics
+- **~20 sales** — spanning last 7 days
+
+Product images use deterministic placeholders from `picsum.photos`.
 
 ---
 
 ## Design Decisions
 
-- **Money** stored as `Number` (float) — documented tradeoff for assessment scope
-- **Soft delete** via `deletedAt` timestamp with Mongoose pre-hooks
-- **Sales** created inside MongoDB transactions for atomic stock deduction
-- **Product search** uses compound text index on `name` + `category`
-- **Price snapshots** in sale items (`productName`, `unitPrice`) for immutable history
-- **Permissions** DB-driven with 60s in-memory cache
+- JWT stored in-memory + localStorage; no httpOnly cookies (assessment scope)
+- Soft delete via `deletedAt` with Mongoose pre-hooks
+- Sales created inside MongoDB transactions for atomic stock deduction
+- Product search uses compound text index + regex fallback
+- Price snapshots in sale items for immutable history
+- Permissions DB-driven with 60s in-memory cache

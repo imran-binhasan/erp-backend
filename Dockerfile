@@ -5,7 +5,7 @@ WORKDIR /app
 
 # Install deps first (layer caching)
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --legacy-peer-deps
 
 # Copy source
 COPY tsconfig.json .
@@ -21,7 +21,7 @@ WORKDIR /app
 
 # Copy production deps
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci --omit=dev --legacy-peer-deps
 
 # Copy compiled output from builder
 COPY --from=builder /app/dist ./dist
