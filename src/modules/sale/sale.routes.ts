@@ -24,10 +24,29 @@ const router = Router();
  *         name: page
  *         schema:
  *           type: integer
+ *         description: Page number
  *       - in: query
  *         name: limit
  *         schema:
  *           type: integer
+ *         description: Items per page
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *         description: Search by product name
+ *       - in: query
+ *         name: dateFrom
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter from date (YYYY-MM-DD)
+ *       - in: query
+ *         name: dateTo
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Filter to date (YYYY-MM-DD)
  *     responses:
  *       200:
  *         description: Sales list
@@ -54,14 +73,16 @@ const router = Router();
  *                 type: array
  *                 items:
  *                   type: object
+ *                   required: [product, quantity]
  *                   properties:
  *                     product:
  *                       type: string
  *                     quantity:
  *                       type: integer
+ *                       minimum: 1
  *     responses:
  *       201:
- *         description: Sale created
+ *         description: Sale created successfully
  *       400:
  *         description: Insufficient stock or validation error
  *       403:
@@ -72,6 +93,35 @@ const router = Router();
  *               $ref: '#/components/schemas/ApiError'
  */
 router.use(authenticate);
+
+/**
+ * @openapi
+ * /sales/{id}:
+ *   get:
+ *     tags: [Sales]
+ *     summary: Get sale by ID
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Sale details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiSuccess'
+ *       404:
+ *         description: Sale not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/ApiError'
+ */
 
 router.get('/', requirePermission('sale:read'), listSalesHandler);
 router.get('/:id', requirePermission('sale:read'), getSaleByIdHandler);
