@@ -109,9 +109,9 @@ const seed = async () => {
   };
 
   const userEntries = [
-    { name: 'Admin User',       email: 'admin@example.com',    password: 'admin123' },
-    { name: 'Md. Shariful Islam', email: 'manager@example.com', password: 'manager123' },
-    { name: 'Rokeya Begum',     email: 'employee@example.com', password: 'employee123' },
+    { name: 'Imran Bin Hasan',   email: 'admin@example.com',    password: 'admin123' },
+    { name: 'Sara Rahman',       email: 'manager@example.com', password: 'manager123' },
+    { name: 'John Doe',          email: 'employee@example.com', password: 'employee123' },
   ];
 
   for (const u of userEntries) {
