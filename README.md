@@ -2,8 +2,9 @@
 
 Inventory & Sales Management API built with **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Mongoose**, and **JWT**.
 
-> **API Base Path:** `/api/v1`
-> **API Docs:** `/api-docs`
+> **Live API:** `https://erp-taskb.railway.app/api/v1`
+> **Live Docs:** `https://erp-taskb.railway.app/api-docs`
+> **Frontend:** `https://erp-taskf.vercel.app`
 
 ---
 
@@ -113,6 +114,24 @@ Base path: `/api/v1`
 | Dashboard | `GET /dashboard/stats` |
 
 Full interactive docs at `/api-docs` (Swagger).
+
+## Docker (Production)
+
+```bash
+docker build -t mini-erp-backend .
+docker run -p 5000:5000 \
+  -e MONGODB_URI=mongodb+srv://... \
+  -e JWT_SECRET=your-secret-key-min-32-chars \
+  -e CLOUDINARY_CLOUD_NAME=... \
+  -e CLOUDINARY_API_KEY=... \
+  -e CLOUDINARY_API_SECRET=... \
+  -e CORS_ORIGIN=https://erp-taskf.vercel.app \
+  mini-erp-backend
+```
+
+Deployed on **Railway** → [`https://erp-taskb.railway.app`](https://erp-taskb.railway.app)
+
+---
 
 ## Design Decisions
 
