@@ -1,7 +1,5 @@
 # Mini ERP — Backend API
 
-Inventory & Sales Management API built with **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Mongoose**, and **JWT**.
-
 > **Live API:** `https://erp-taskb.up.railway.app/api/v1`
 > **Swagger Docs:** `https://erp-taskb.up.railway.app/api-docs`
 > **Frontend:** `https://erp-taskf.vercel.app`
