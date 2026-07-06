@@ -2,8 +2,8 @@
 
 Inventory & Sales Management API built with **Node.js**, **Express**, **TypeScript**, **MongoDB**, **Mongoose**, and **JWT**.
 
-> **Live API:** `https://erp-taskb.railway.app/api/v1`
-> **Swagger Docs:** `https://erp-taskb.railway.app/api-docs`
+> **Live API:** `https://erp-taskb.up.railway.app/api/v1`
+> **Swagger Docs:** `https://erp-taskb.up.railway.app/api-docs`
 > **Frontend:** `https://erp-taskf.vercel.app`
 
 ---
@@ -80,7 +80,7 @@ docker run -p 5000:5000 \
   mini-erp-backend
 ```
 
-Deployed on **Railway** → `https://erp-taskb.railway.app`
+Deployed on **Railway** → `https://erp-taskb.up.railway.app`
 
 ---
 
